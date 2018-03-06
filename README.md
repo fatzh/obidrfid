@@ -14,7 +14,24 @@ The official C libraries must be installed on the system. Run `./install-libs.sh
 
 ## Usage
 
-This moodule can be used as a standalone program to test the reader.
+This moodule can be used as a standalone program to test the reader. The script
+`obidrfid.py` is installed by default.
+
+Try `obidrfid.py --help` for usage.
+
+### Set IP address
+
+`obidrfid.py config --ip 192.168.10.10 --set-ip 192.168.142.10`
+
+This will change the reader ip address from `192.168.10.10` (the default) to
+`192.168.142.10`.
+
+### Read transponders
+
+`obidrfid read --ip 192.168.142.10`
+
+This will conenct to the reader and start reading tags in range. Press `Ctrl-C`
+to exit.
 
 ## Functions
 
