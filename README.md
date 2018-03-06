@@ -3,6 +3,10 @@
 This module is a simple Python wrapper around the C library provided by the
 vendor `libfetcp.so` and `libfeisc.so`, using ctypes.
 
+## Installation
+
+`pip install obidrfid`
+
 ## Setup
 
 The antenna is pre-configured with an IP address of 192.168.10.10. So you'll
