@@ -7,7 +7,7 @@ setup(
     author='Fabrice Tereszkiewicz',
     author_email='fabrice.tz@51stfloor.com',
     url='https://github.com/fatzh/obidrfid',
-    download_url='https://github.com/fatzh/obidrfid/archive/0.1.tar.gz',
+    download_url='https://github.com/fatzh/obidrfid/archive/0.2.tar.gz',
     keywords=['rfid', 'obid'],
     classifiers=[],
 )
