@@ -3,6 +3,9 @@
 This module is a simple Python wrapper around the C library provided by the
 vendor `libfetcp.so` and `libfeisc.so`, using ctypes.
 
+This antenna is supported, with IP connection (no USB):
+[FEIG website](https://www.feig.de/en/products/identification/product/id-iscspad102/)
+
 ## Installation
 
 `pip install obidrfid`
@@ -32,7 +35,7 @@ This will change the reader ip address from `192.168.10.10` (the default) to
 
 ### Read transponders
 
-`obidrfid read --ip 192.168.142.10`
+`obidrfid.py read --ip 192.168.142.10`
 
 This will conenct to the reader and start reading tags in range. Press `Ctrl-C`
 to exit.
