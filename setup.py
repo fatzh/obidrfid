@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
     name='obidrfid',
     py_modules=['obidrfid'],
-    scripts=['obidrfid'],
+    scripts=['obidrfid.py'],
     version='0.5',
     description='Python wrapper to communicate with eh OBID RFID IP antennas',
     author='Fabrice Tereszkiewicz',
