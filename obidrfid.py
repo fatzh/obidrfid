@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import ctypes
+import time
 
 libfetcp = ctypes.CDLL('libfetcp.so')
 libfeisc = ctypes.CDLL('libfeisc.so')
@@ -56,6 +57,10 @@ def rfid_read(reader):
         ctypes.POINTER(ctypes.c_int),
         ctypes.c_int,
     ]
+
+    # first a software reset
+    rfid_reader_software_reset(reader)
+    time.sleep(.005)
 
     back = libfeisc.FEISC_0xB0_ISOCmd(
         reader,                 # reader ID
@@ -194,10 +199,26 @@ def rfid_reader_system_reset(reader):
     if (back == 0):
         return True
     elif (back > 0):
-        print('--- ! Reader conf status {}'.format(rfid_status_text(back)))
+        print('--- ! Reader reset status {}'.format(rfid_status_text(back)))
         return False
     else:
-        print('--- ! Reader conf error {}'.format(back))
+        print('--- ! Reader reset error {}'.format(back))
+        print(rfid_error_text(ctypes.c_int(back)))
+        return False
+
+
+def rfid_reader_software_reset(reader):
+    '''
+    Perform a software reset (0x69)
+    '''
+    back = libfeisc.FEISC_0x69_RFReset(reader, ctypes.c_ubyte(255))
+    if (back == 0):
+        return True
+    elif (back > 0):
+        print('--- ! Reader reset status {}'.format(rfid_status_text(back)))
+        return False
+    else:
+        print('--- ! Reader reset error {}'.format(back))
         print(rfid_error_text(ctypes.c_int(back)))
         return False
 
@@ -241,7 +262,6 @@ def validate_ip(s):
 
 
 if __name__ == '__main__':
-    import time
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("command", help="Command, 'config' to configure the reader ip address or 'read' to start reading RFID tags.", choices=['config', 'read'])
