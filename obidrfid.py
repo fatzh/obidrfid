@@ -33,6 +33,21 @@ def rfid_connect(ip, port):
 
     return None
 
+def rfid_disconnect(reader):
+    '''
+    Disconnect to the RFID antenna
+    '''
+    back = libfetcp.FETCP_DisConnect(reader)
+    if (back == 0):
+        return True
+    elif (back > 0):
+        print('--- ! Reader disconnect status {}'.format(rfid_status_text(back)))
+        return False
+    else:
+        print('--- ! Reader disconnect error {}'.format(back))
+        print(rfid_error_text(ctypes.c_int(back)))
+        return False
+
 
 def rfid_read(reader):
     '''
