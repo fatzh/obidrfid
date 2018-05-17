@@ -3,7 +3,7 @@ setup(
     name='obidrfid',
     py_modules=['obidrfid'],
     scripts=['obidrfid.py'],
-    version='1.2',
+    version='1.3',
     description='Python wrapper to communicate with eh OBID RFID IP antennas',
     author='Fabrice Tereszkiewicz',
     author_email='fabrice.tz@51stfloor.com',
