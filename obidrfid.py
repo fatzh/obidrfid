@@ -9,7 +9,7 @@ libfetcp = ctypes.CDLL('libfetcp.so')
 libfeisc = ctypes.CDLL('libfeisc.so')
 
 # default port
-PORT = 10001
+DEFAULT_PORT = 10001
 
 
 def ping(ip, timeout=2):
@@ -24,7 +24,7 @@ def ping(ip, timeout=2):
     return True
 
 
-def rfid_connect(ip, port):
+def rfid_connect(ip, port=DEFAULT_PORT):
     '''
     Connect to the RFID antenna
     '''
@@ -301,7 +301,7 @@ if __name__ == '__main__':
 
         # all good, connect to the reader
         print('Connecting to IP address {}'.format(ip))
-        reader = rfid_connect(ip, PORT)
+        reader = rfid_connect(ip)
         conf = rfid_reader_lan_configuration_read(reader)
         print('Reader {} ready.'.format(reader))
         print('Reading reader info...')
@@ -317,7 +317,7 @@ if __name__ == '__main__':
         if ip is None or not validate_ip(ip):
             print('Invalid reader IP address.')
             quit()
-        reader = rfid_connect(ip, PORT)
+        reader = rfid_connect(ip)
         print('Reader {} ready.'.format(reader))
         print('Reading reader info...')
         rfid_reader_info(reader)
