@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 import ctypes
 import time
+import subprocess
+import platform
 
 libfetcp = ctypes.CDLL('libfetcp.so')
 libfeisc = ctypes.CDLL('libfeisc.so')
@@ -10,26 +12,39 @@ libfeisc = ctypes.CDLL('libfeisc.so')
 PORT = 10001
 
 
+def ping(ip, timeout=2):
+    '''
+    Test if the antenna is reachable, to abort before the default 30s timeout
+    default to 2s
+    '''
+    try:
+        subprocess.check_output("ping -{} 1 {} -W {}".format('n' if platform.system().lower()=="windows" else 'c', ip, timeout), shell=True)
+    except subprocess.CalledProcessError:
+        return False
+    return True
+
+
 def rfid_connect(ip, port):
     '''
     Connect to the RFID antenna
     '''
-    port_handle = libfetcp.FETCP_Connect(ip.encode(), port)
-    if (port_handle > 0):
-        print('Port connected...')
-        reader_handle = libfeisc.FEISC_NewReader(port_handle)
-        if (reader_handle > 0):
-            back = libfeisc.FEISC_SetReaderPara(
-                reader_handle,
-                ctypes.c_char_p(b'FrameSupport'),
-                ctypes.c_char_p(b'Advanced')
-            )
-            print('Reader initialized, set param {}'.format(back))
-            return reader_handle
+    if ping(ip):
+        port_handle = libfetcp.FETCP_Connect(ip.encode(), port)
+        if (port_handle > 0):
+            print('Port connected...')
+            reader_handle = libfeisc.FEISC_NewReader(port_handle)
+            if (reader_handle > 0):
+                back = libfeisc.FEISC_SetReaderPara(
+                    reader_handle,
+                    ctypes.c_char_p(b'FrameSupport'),
+                    ctypes.c_char_p(b'Advanced')
+                )
+                print('Reader initialized, set param {}'.format(back))
+                return reader_handle
+            else:
+                print('--- ! Reader can not be initializer, error {}'.format(reader_handle))
         else:
-            print('--- ! Reader can not be initializer, error {}'.format(reader_handle))
-    else:
-        print('--- ! Connection failed, error {}'.format(port_handle))
+            print('--- ! Connection failed, error {}'.format(port_handle))
 
     return None
 
